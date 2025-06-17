@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>RA Digital india Pan Center</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+  <div class="max-w-7xl mx-auto bg-white p-6 rounded shadow">
+    <h1 class="text-2xl font-bold mb-6 text-blue-700 text-center">Submitted PAN Card Applications</h1>
+
+    <div class="text-right mb-4">
+      <button onclick="fetchPanCards()" class="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700">
+        🔄 Refresh Now
+      </button>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="w-full border text-sm">
+        <thead class="bg-gray-200 text-xs">
+          <tr>
+            <th class="p-2 border">Application ID</th>
+            <th class="p-2 border">Category</th>
+            <th class="p-2 border">PAN Type</th>
+            <th class="p-2 border">Title</th>
+            <th class="p-2 border">Full Name</th>
+            <th class="p-2 border">Mobile</th>
+            <th class="p-2 border">Email</th>
+            <th class="p-2 border">Income Source</th>
+            <th class="p-2 border">DOB</th>
+            <th class="p-2 border">Gender</th>
+            <th class="p-2 border">Address</th>
+            <th class="p-2 border">Pincode</th>
+            <th class="p-2 border">Post Office</th>
+            <th class="p-2 border">Flat/Block</th>
+            <th class="p-2 border">Premises</th>
+            <th class="p-2 border">Locality</th>
+            <th class="p-2 border">Town/City</th>
+            <th class="p-2 border">State</th>
+            <th class="p-2 border">Parent Option</th>
+            <th class="p-2 border">Father's Name</th>
+            <th class="p-2 border">Mother's Name</th>
+            <th class="p-2 border">Parent Yes</th>
+            <th class="p-2 border">Aadhar Number</th>
+            <th class="p-2 border">Voter ID</th>
+            <th class="p-2 border">ID Proof</th>
+            <th class="p-2 border">Address Proof</th>
+            <th class="p-2 border">DOB Proof</th>
+            <th class="p-2 border">Area Code</th>
+            <th class="p-2 border">AO Type</th>
+            <th class="p-2 border">Range Code</th>
+            <th class="p-2 border">AO Number</th>
+            <th class="p-2 border">Fee</th>
+          </tr>
+        </thead>
+        <tbody id="panTable" class="text-center"></tbody>
+      </table>
+    </div>
+
+    <div id="error" class="text-red-600 text-center mt-4 hidden">❌ Could not load data.</div>
+  </div>
+
+  <script>
+    async function fetchPanCards() {
+      try {
+        const response = await fetch('/api/pancards');
+        if (!response.ok) throw new Error('Fetch failed');
+
+        const data = await response.json();
+        const table = document.getElementById('panTable');
+        table.innerHTML = '';
+
+        if (data.length === 0) {
+          table.innerHTML = '<tr><td colspan="30" class="p-2 border">No data available</td></tr>';
+          return;
+        }
+
+        data.forEach(entry => {
+          const row = `<tr>
+            <td class="border p-2">${entry.application_id || ''}</td>
+            <td class="border p-2">${entry.category || ''}</td>
+            <td class="border p-2">${entry.panType || ''}</td>
+            <td class="border p-2">${entry.title || ''}</td>
+            <td class="border p-2">${entry.fullpanname || ''}</td>
+            <td class="border p-2">${entry.mobile || ''}</td>
+            <td class="border p-2">${entry.email || ''}</td>
+            <td class="border p-2">${entry.income_source || ''}</td>
+            <td class="border p-2">${formatDate(entry.dob)}</td>
+            <td class="border p-2">${entry.gender || ''}</td>
+            <td class="border p-2">${entry.residenceaddress || ''}</td>
+            <td class="border p-2">${entry.pincode || ''}</td>
+            <td class="border p-2">${entry.postoffice || ''}</td>
+            <td class="border p-2">${entry.flatroomdoorblockno || ''}</td>
+            <td class="border p-2">${entry.nameofpremisesbuildingvillage || ''}</td>
+            <td class="border p-2">${entry.arealocalitytaluksubdivision || ''}</td>
+            <td class="border p-2">${entry.towncitydistrict || ''}</td>
+            <td class="border p-2">${entry.state || ''}</td>
+            <td class="border p-2">${entry.parentoption || ''}</td>
+            <td class="border p-2">${entry.father_name || ''}</td>
+            <td class="border p-2">${entry.mother_name || ''}</td>
+            <td class="border p-2">${entry.parentoptionyes || ''}</td>
+            <td class="border p-2">${entry.aadhar_number || ''}</td>
+             <td class="border p-2">${entry.voter_id || ''}</td>
+            <td class="border p-2">${entry.identity_proof || ''}</td>
+            <td class="border p-2">${entry.address_proof || ''}</td>
+            <td class="border p-2">${entry.dob_proof || ''}</td>
+            <td class="border p-2">${entry.area_code || ''}</td>
+            <td class="border p-2">${entry.ao_type || ''}</td>
+            <td class="border p-2">${entry.range_code || ''}</td>
+            <td class="border p-2">${entry.ao_number || ''}</td>
+            <td class="border p-2">${entry.processing_fee || ''}</td>
+          </tr>`;
+          table.innerHTML += row;
+        });
+
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        document.getElementById('error').classList.remove('hidden');
+      }
+    }
+
+    function formatDate(dateStr) {
+      if (!dateStr) return '';
+      const date = new Date(dateStr);
+      const d = String(date.getDate()).padStart(2, '0');
+      const m = String(date.getMonth() + 1).padStart(2, '0');
+      const y = date.getFullYear();
+      return `${d}-${m}-${y}`;
+    }
+
+    window.onload = () => {
+      fetchPanCards();
+      setInterval(fetchPanCards, 30000); // Refresh every 30 seconds
+    };
+  </script>
+</body>
+</html>

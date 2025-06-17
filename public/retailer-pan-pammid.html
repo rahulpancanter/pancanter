@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RA Digital india Pan Center</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .fade-in {
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body class="bg-gray-100 p-6">
+<!-- 🌐 Navbar -->
+<nav class="bg-gray-900 text-white shadow-lg">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="flex justify-between items-center h-16">
+      <div class="text-xl font-bold">
+        <a href="retailer-dashboard.html" class="text-white">RA DIGITAL INDIA PORTAL</a>
+      </div>
+
+      <div class="hidden md:flex items-center space-x-6">
+        <a href="retailer-dashboard.html" class="hover:text-blue-400">Home</a>
+        <a href="retailer-profile.html" class="hover:text-blue-400">Profile</a>
+
+        <div class="relative group">
+          <button class="hover:text-blue-400">Services</button>
+          <div class="absolute hidden group-hover:block bg-white text-black mt-2 rounded shadow-lg w-56 z-50">
+            <a href="retailer-New-PAN-Card-Dashboard.html" class="block px-4 py-2 hover:bg-gray-100">PAN Apply A49</a>
+            <a href="retailer-corruption-pan-cardappy.html" class="block px-4 py-2 hover:bg-gray-100">Correction PAN</a>
+            <a href="retailer-PAN-card-new-upload.html" class="block px-4 py-2 hover:bg-gray-100">Upload Document</a>
+            <a href="PAN card slip download.html" class="block px-4 py-2 hover:bg-gray-100">PAN Card Status</a>
+          </div>
+        </div>
+
+        <a href="retailer-pan-pammid.html" class="hover:text-blue-400">PAN Altruist ID</a>
+        <a href="/logout" class="hover:text-red-400">Logout</a>
+      </div>
+
+      <div class="md:hidden">
+        <button id="mobile-menu-button" class="focus:outline-none">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2"
+               viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+      <!-- Mobile Menu Button -->
+      <div class="md:hidden">
+        <button id="mobile-menu-button">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2"
+            viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- 🔔 Auto Modal -->
+<div id="infoModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+  <div class="bg-white max-w-xl w-full p-6 rounded-lg shadow-lg fade-in">
+    <h2 class="text-xl font-bold text-red-700 mb-4">🔔 कृपया ध्यान दें</h2>
+    <div class="text-gray-800 text-sm leading-relaxed space-y-3">
+      <p>अगर आप <strong>NSDL प्राण आईडी</strong> लेना चाहते हैं और आपका आधार में मोबाइल लिंक है, उसमें ओटीपी जाता है ओटीपी सबमिट होने के <strong>2 घंटे के अंदर मेल पर </strong> आ जाता है</p>
+      <hr class="my-2 border-gray-300">
+      <p>अगर आप <strong>Retailer ID</strong> लेते हैं, तो कंपनी का ₹<strong>50</strong> चार्ज कटेगा।</p>
+      <p>अगर आप <strong>Distributor</strong>₹<strong>200</strong> चार्ज कटेगा। और <strong>Retailer ID</strong> फ्री और अनलिमिटेड बनाना चाहते हैं, तो कंपनी से </p>
+      <p><strong>Master Distributor ID</strong> आप ₹<strong>350</strong> चार्ज कटेगा। और <strong>Retailer id Distributor id फ्री</strong> में क्रिएट कर सकते हैं।</p>
+    </div>
+    <div class="mt-6 text-right">
+      <button onclick="closeModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">मैं समझ गया</button>
+    </div>
+  </div>
+</div>
+ <!-- Main Content -->
+<div class="container fade-in">
+  <h2>Welcome to RA Digital India PAN Center</h2>
+  <!-- Add your content here -->
+</div>
+
+<!-- 🧾 NSDL PAMM ID  Form -->
+<div class="max-w-5xl mx-auto p-6 bg-white rounded shadow-md space-y-6 mt-4">
+  <h2 class="text-2xl font-semibold text-gray-800">PAN PAMM ID Creator</h2>
+  <form class="space-y-4" id="psaForm">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <input name="fullname" class="p-2 border rounded" placeholder="Full Name" required />
+      <input name="username" class="p-2 border rounded" placeholder="Username" disabled />
+    </div>
+    <input name="fulladdress" class="p-2 border rounded w-full" placeholder="Full Address" required />
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <input name="village" class="p-2 border rounded" placeholder="Village" required />
+      <input name="city" class="p-2 border rounded" placeholder="City" required />
+      <select name="state" class="p-2 border rounded" required>
+        <option value="">--Select State--</option>
+        <option>Delhi</option>
+        <option>Maharashtra</option>
+        <option>Uttar Pradesh</option>
+        <option>Bihar</option>
+      </select>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <input name="pin" maxlength="6" class="p-2 border rounded" placeholder="PIN Code" required />
+      <input name="shopname" class="p-2 border rounded" placeholder="Shop Name" required />
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <input name="mobile" class="p-2 border rounded" placeholder="Mobile Number" required />
+      <input name="email" type="email" class="p-2 border rounded" placeholder="Email" required />
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <input name="aadhaar" class="p-2 border rounded" placeholder="Aadhaar Number" required />
+      <input name="pan" class="p-2 border rounded" placeholder="PAN Number" required />
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <select name="accountType" id="accountType" onchange="setRate()" class="p-2 border rounded" required>
+        <option value="">--Select Account Type--</option>
+        <option value="Retailer">Retailer</option>
+        <option value="Distributor">Distributor</option>
+        <option value="Master Distributor">Master Distributor</option>
+      </select>
+      <input name="rate" id="rateField" readonly class="p-2 border rounded bg-gray-100" placeholder="Rate ₹" />
+    </div>
+    <button type="submit" class="bg-blue-600 text-white p-2 rounded w-full hover:bg-blue-700">Create Now</button>
+  </form>
+</div>
+
+<!-- 💡 Scripts -->
+<script>
+  function setRate() {
+    const type = document.getElementById('accountType').value;
+    const rateField = document.getElementById('rateField');
+    if (type === 'Retailer') rateField.value = '50';
+    else if (type === 'Distributor') rateField.value = '200';
+    else if (type === 'Master Distributor') rateField.value = '350';
+    else rateField.value = '';
+  }
+
+  document.getElementById('psaForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const form = e.target;
+    const formData = new FormData(form);
+    const data = {};
+    formData.forEach((value, key) => data[key] = value);
+
+    try {
+      const res = await fetch('/create-psa', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      const result = await res.json();
+      alert(result.message);
+      form.reset();
+      document.getElementById('rateField').value = '';
+      loadPsaData();
+    } catch (err) {
+      console.error(err);
+      alert('Submission failed!');
+    }
+  });
+
+  async function loadPsaData() {
+    try {
+      const res = await fetch('/all/get-psa');
+      const data = await res.json();
+      const tableBody = document.querySelector('#psaTable tbody');
+      tableBody.innerHTML = '';
+
+      data.forEach(psa => {
+        const row = `
+          <tr>
+            <td class="border px-2 py-1">${psa.fullname}</td>
+            <td class="border px-2 py-1">${psa.username}</td>
+            <td class="border px-2 py-1">${psa.mobile}</td>
+            <td class="border px-2 py-1">${psa.email}</td>
+            <td class="border px-2 py-1">${psa.accountType}</td>
+            <td class="border px-2 py-1">₹${psa.rate}</td>
+          </tr>
+        `;
+        tableBody.insertAdjacentHTML('beforeend', row);
+      });
+    } catch (err) {
+      console.error('Failed to load PSA data:', err);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', loadPsaData);
+</script>
+
+<script>
+  // Auto-open modal after 1 second
+  window.onload = () => {
+    setTimeout(() => {
+      document.getElementById('infoModal').classList.remove('hidden');
+    }, 1000);
+  };
+
+  // Close modal function
+  function closeModal() {
+    document.getElementById('infoModal').classList.add('hidden');
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>RA Digital india Pan Center</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+  <div class="max-w-7xl mx-auto bg-white p-6 rounded shadow">
+    <h1 class="text-2xl font-bold mb-6 text-blue-700 text-center">Submitted PAN Card Applications</h1>
+
+    <div class="text-right mb-4">
+      <button onclick="update_pan_card()" class="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700">
+        🔄 Refresh Now
+      </button>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="w-full border text-sm">
+        <thead class="bg-gray-200 text-xs">
+          <tr>
+            <th class="p-2 border">PAN NUMBER</th>
+            <th class="p-2 border">Full Name</th>
+            <th class="p-2 border">Mobile</th>
+            <th class="p-2 border">Email</th>
+            <th class="p-2 border">DOB</th>
+            <th class="p-2 border">Gender</th>
+            <th class="p-2 border">Flat/Block</th>
+            <th class="p-2 border">Premises</th>
+            <th class="p-2 border">Locality</th>
+            <th class="p-2 border">Town/City</th>
+            <th class="p-2 border">State</th>
+            <th class="p-2 border">Pincode</th>
+            <th class="p-2 border">Post Office</th>
+            <th class="p-2 border">Parent Option</th>
+            <th class="p-2 border">Father's Name</th>
+            <th class="p-2 border">Mother's Name</th>
+            <th class="p-2 border">Parent Yes</th>
+            <th class="p-2 border">Aadhar Number</th>
+            <th class="p-2 border">Voter ID</th>
+            <th class="p-2 border">Identity Proof</th>
+            <th class="p-2 border">PAN PDF</th>
+            <th class="p-2 border">Aadhaar PDF</th>
+            <th class="p-2 border">Photo</th>
+            <th class="p-2 border">Signature</th>
+          </tr>
+        </thead>
+        <tbody id="panTable" class="text-center"></tbody>
+      </table>
+    </div>
+
+    <div id="error" class="text-red-600 text-center mt-4 hidden">❌ Could not load data.</div>
+  </div>
+
+  <script>
+    async function update_pan_card() {
+      const tableBody = document.getElementById('panTable');
+      const errorDiv = document.getElementById('error');
+      tableBody.innerHTML = '';
+      errorDiv.classList.add('hidden');
+
+      try {
+        const response = await fetch('/api/corrupdatepancard');
+        const data = await response.json();
+
+        data.forEach(entry => {
+          const tr = document.createElement('tr');
+
+          tr.innerHTML = `
+            <td class="border p-2">${entry.pannumber || ''}</td>
+            <td class="border p-2">${entry.fullpanname || ''}</td> <!-- ✅ Updated here -->
+            <td class="border p-2">${entry.mobile || ''}</td>
+            <td class="border p-2">${entry.email || ''}</td>
+            <td class="border p-2">${entry.dob || ''}</td>
+            <td class="border p-2">${entry.gender || ''}</td>
+            <td class="border p-2">${entry.flatroomdoorblockno || ''}</td>
+            <td class="border p-2">${entry.nameofpremisesbuildingvillage || ''}</td>
+            <td class="border p-2">${entry.arealocalitytaluksubdivision || ''}</td>
+            <td class="border p-2">${entry.towncitydistrict || ''}</td>
+            <td class="border p-2">${entry.state || ''}</td>
+            <td class="border p-2">${entry.pincode || ''}</td>
+            <td class="border p-2">${entry.postoffice || ''}</td>
+            <td class="border p-2">${entry.parentoption || ''}</td>
+            <td class="border p-2">${entry.father_name || ''}</td>
+            <td class="border p-2">${entry.mother_name || ''}</td>
+            <td class="border p-2">${entry.parentoptionyes || ''}</td>
+            <td class="border p-2">${entry.aadhar_number || ''}</td>
+            <td class="border p-2">${entry.voter_id || ''}</td>
+            <td class="border p-2">${entry.identity_proof || ''}</td>
+
+            <td class="border p-2">
+              ${entry.pancard_pdf ? `<a href="${entry.pancard_pdf}" target="_blank" class="text-blue-600 underline">View PAN PDF</a>` : ''}
+            </td>
+
+            <td class="border p-2">
+              ${entry.aadhar_file ? `<a href="${entry.aadhar_file}" target="_blank" class="text-blue-600 underline">View Aadhaar PDF</a>` : ''}
+            </td>
+
+            <td class="border p-2">
+              ${entry.photo ? `<img src="${entry.photo}" alt="Photo" class="w-12 h-12 object-cover rounded-full mx-auto" />` : ''}
+            </td>
+
+            <td class="border p-2">
+              ${entry.signature ? `<img src="${entry.signature}" alt="Signature" class="w-12 h-12 object-contain mx-auto" />` : ''}
+            </td>
+          `;
+
+          tableBody.appendChild(tr);
+        });
+      } catch (err) {
+        console.error('Error loading data:', err);
+        errorDiv.classList.remove('hidden');
+      }
+    }
+
+    window.onload = update_pan_card;
+  </script>
+</body>
+</html>

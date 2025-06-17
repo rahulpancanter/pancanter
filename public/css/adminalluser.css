@@ -1,0 +1,97 @@
+/* Reset some default spacing */
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  background-color: #f7f7f7;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* ✅ Layout: table on the left, form on the right */
+.dashboard-container {
+  display: flex;
+  flex-direction: row-reverse; /* form on right side */
+  gap: 20px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+/* ✅ Form styling */
+#userForm {
+  background-color: #ffffff;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 15px;
+  flex: 1;
+  min-width: 300px;
+  max-width: 600px;
+}
+
+#userForm input,
+#userForm button {
+  padding: 10px;
+  font-size: 14px;
+}
+
+#userForm button {
+  grid-column: span 2;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+#userForm button:hover {
+  background-color: #0056b3;
+}
+
+/* ✅ Table styling */
+#userTable {
+  flex: 2;
+  min-width: 400px;
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border: 1px solid #ccc;
+}
+
+#userTable th,
+#userTable td {
+  padding: 10px;
+  border: 1px solid #ccc;
+  text-align: left;
+}
+
+#userTable th {
+  background-color: #f0f0f0;
+}
+
+/* ✅ Photo & icon styling */
+#userTable img {
+  max-width: 40px;
+  max-height: 40px;
+  border-radius: 4px;
+}
+
+.icon {
+  width: 20px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+/* ✅ Responsive: Stack on mobile */
+@media (max-width: 768px) {
+  .dashboard-container {
+    flex-direction: column;
+  }
+
+  #userForm button {
+    grid-column: span 1;
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "name": "pancanter",
+  "version": "1.0.0",
+  "description": "PAN Canter Backend Service",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": ["express", "mongoose", "pan", "backend"],
+  "author": "rahulpancanter",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "body-parser": "^2.2.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "express-session": "^1.18.1",
+    "mongoose": "^8.15.1",
+    "multer": "^2.0.1"
+  }
+}

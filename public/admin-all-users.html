@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+  <h2 class="text-3xl font-bold mb-6 text-center">Admin Dashboard</h2>
+
+  <!-- Flex Layout: Form + Table -->
+  <div class="flex flex-col md:flex-row gap-6 max-w-7xl mx-auto">
+    
+    <!-- FORM START -->
+    <form id="userForm" enctype="multipart/form-data" class="bg-white p-6 rounded shadow-md w-full md:w-1/2">
+      <input type="hidden" id="userId" />
+
+      <div class="grid grid-cols-1 gap-4">
+        <input type="text" id="name" placeholder="Name" required class="border p-2 rounded w-full" />
+        <input type="email" id="email" placeholder="Email" required class="border p-2 rounded w-full" />
+        <input type="password" id="password" placeholder="Password" class="border p-2 rounded w-full" />
+        <input type="number" id="walletbalance" placeholder="Wallet Balance" required class="border p-2 rounded w-full" />
+        <input type="text" id="mobile" placeholder="Mobile" class="border p-2 rounded w-full" />
+        <input type="text" id="address" placeholder="Address" class="border p-2 rounded w-full" />
+        <input type="file" id="photo" accept="image/*" class="border p-2 rounded w-full" />
+      </div>
+
+      <button type="submit" class="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded w-full">
+        Submit
+      </button>
+    </form>
+    <!-- FORM END -->
+
+    <!-- TABLE START -->
+    <div class="overflow-x-auto bg-white p-4 rounded shadow-md w-full md:w-1/2">
+      <table class="min-w-full text-sm text-left text-gray-700">
+        <thead class="bg-gray-200 text-gray-700 text-sm">
+          <tr>
+            <th class="p-2">Name</th>
+            <th class="p-2">Email</th>
+            <th class="p-2">Wallet</th>
+            <th class="p-2">Mobile</th>
+            <th class="p-2">Address</th>
+            <th class="p-2">Photo</th>
+            <th class="p-2">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="userTableBody" class="text-gray-800"></tbody>
+      </table>
+    </div>
+    <!-- TABLE END -->
+
+  </div>
+
+  <script>
+    let users = [];
+
+    async function fetchUsers() {
+      const res = await fetch('/users');
+      users = await res.json();
+      const tbody = document.getElementById('userTableBody');
+      tbody.innerHTML = '';
+
+      users.forEach(user => {
+        const tr = document.createElement('tr');
+        tr.classList.add("border-b", "hover:bg-gray-50");
+        tr.innerHTML = `
+          <td class="p-2">${user.name}</td>
+          <td class="p-2">${user.email}</td>
+          <td class="p-2">${user.walletbalance || 0}</td>
+          <td class="p-2">${user.mobile || ''}</td>
+          <td class="p-2">${user.address || ''}</td>
+          <td class="p-2">
+            ${user.photo ? `<img src="${user.photo}" width="40" height="40" class="rounded-full border" />` : 'No Photo'}
+          </td>
+          <td class="p-2 space-x-2">
+            <button onclick="fillForm('${user._id}')" class="text-blue-600 hover:underline" title="Edit">✏️</button>
+            <button onclick="deleteUser('${user._id}')" class="text-red-600 hover:underline" title="Delete">🗑️</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function fillForm(id) {
+      const user = users.find(u => u._id === id);
+      if (user) {
+        document.getElementById('userId').value = user._id;
+        document.getElementById('name').value = user.name;
+        document.getElementById('email').value = user.email;
+        document.getElementById('password').value = '';
+        document.getElementById('walletbalance').value = user.walletbalance || 0;
+        document.getElementById('mobile').value = user.mobile || '';
+        document.getElementById('address').value = user.address || '';
+      }
+    }
+
+    document.getElementById('userForm').addEventListener('submit', async e => {
+      e.preventDefault();
+
+      const id = document.getElementById('userId').value;
+      const formData = new FormData();
+      formData.append('name', document.getElementById('name').value);
+      formData.append('email', document.getElementById('email').value);
+      formData.append('password', document.getElementById('password').value);
+      formData.append('walletbalance', document.getElementById('walletbalance').value);
+      formData.append('mobile', document.getElementById('mobile').value);
+      formData.append('address', document.getElementById('address').value);
+
+      const photoFile = document.getElementById('photo').files[0];
+      if (photoFile) formData.append('photo', photoFile);
+
+      const url = id ? `/users/${id}` : '/signup';
+      const method = id ? 'PUT' : 'POST';
+
+      const res = await fetch(url, {
+        method,
+        body: formData
+      });
+
+      const result = await res.json();
+      alert(result.message || 'Saved');
+      fetchUsers();
+      e.target.reset();
+    });
+
+    async function deleteUser(id) {
+      if (confirm('Delete this user?')) {
+        const res = await fetch(`/users/${id}`, { method: 'DELETE' });
+        const result = await res.json();
+        alert(result.message);
+        fetchUsers();
+      }
+    }
+
+    fetchUsers();
+  </script>
+</body>
+</html>

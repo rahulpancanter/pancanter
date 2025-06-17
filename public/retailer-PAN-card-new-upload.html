@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>RA Digital india Pan Center</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-10">
+  <!-- 🌐 Navbar -->
+<nav class="bg-gray-900 text-white shadow-lg">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="flex justify-between items-center h-16">
+      <div class="text-xl font-bold">
+        <a href="retailer-dashboard.html" class="text-white">RA DIGITAL INDIA PORTAL</a>
+      </div>
+
+      <div class="hidden md:flex items-center space-x-6">
+        <a href="retailer-dashboard.html" class="hover:text-blue-400">Home</a>
+        <a href="retailer-profile.html" class="hover:text-blue-400">Profile</a>
+
+        <div class="relative group">
+          <button class="hover:text-blue-400">Services</button>
+          <div class="absolute hidden group-hover:block bg-white text-black mt-2 rounded shadow-lg w-56 z-50">
+            <a href="retailer-New-PAN-Card-Dashboard.html" class="block px-4 py-2 hover:bg-gray-100">PAN Apply A49</a>
+            <a href="retailer-corruption-pan-cardappy.html" class="block px-4 py-2 hover:bg-gray-100">Correction PAN</a>
+            <a href="retailer-PAN-card-new-upload.html" class="block px-4 py-2 hover:bg-gray-100">Upload Document</a>
+            <a href="PAN card slip download.html" class="block px-4 py-2 hover:bg-gray-100">PAN Card Status</a>
+          </div>
+        </div>
+
+        <a href="retailer-pan-pammid.html" class="hover:text-blue-400">PAN Altruist ID</a>
+        <a href="/logout" class="hover:text-red-400">Logout</a>
+      </div>
+
+      <div class="md:hidden">
+        <button id="mobile-menu-button" class="focus:outline-none">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2"
+               viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+   <!-- Main Content -->
+<div class="container fade-in">
+  <h2>Welcome to RA Digital India PAN Center</h2>
+  <!-- Add your content here -->
+</div>
+  <div class="max-w-xl mx-auto bg-white p-6 rounded shadow">
+    <h2 class="text-xl font-semibold mb-4">Upload PAN Documents</h2>
+
+    <form id="uploadForm" enctype="multipart/form-data">
+      <input type="text" name="application_id" placeholder="MOBILE NUMBER" class="border p-2 mb-3 w-full" required maxlength="10" pattern="\d{10}" />
+      <input type="file" name="photo" accept=".jpg,.jpeg" class="border p-2 mb-3 w-full" required />
+      <input type="file" name="signature" accept=".jpg,.jpeg" class="border p-2 mb-3 w-full" required />
+      <input type="file" name="pancard_pdf" accept="application/pdf" class="border p-2 mb-3 w-full" required />
+      <button class="bg-green-600 text-white px-4 py-2 rounded" type="submit">Submit</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('uploadForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+      try {
+        const res = await fetch('/submit-updatepancard', {
+          method: 'POST',
+          body: formData
+        });
+        const result = await res.text();
+        if (res.ok) {
+          alert("✅ Uploaded successfully");
+          window.location.href = "/retailer-submission-success1.html";
+        } else {
+          alert("❌ " + result);
+        }
+      } catch (err) {
+        alert("❌ Upload failed");
+        console.error(err);
+      }
+    });
+  </script>
+</body>
+</html>

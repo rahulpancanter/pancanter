@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RA Digital india Pan Center</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+
+</head>
+<body class="bg-gray-100 text-gray-900">
+
+<!-- ✅ Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- ✅ Navbar -->
+<nav class="bg-gray-900 text-white shadow-lg">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="flex justify-between items-center h-16">
+      
+      <!-- Logo -->
+      <div class="text-xl font-bold">
+        <a href="retailer-dashboard.html" class="text-white">RA DIGITAL INDIA PORTAL</a>
+      </div>
+
+      <!-- Nav Links -->
+      <div class="hidden md:flex items-center space-x-6">
+        <a href="retailer-dashboard.html" class="hover:text-blue-400">Home</a>
+        <a href="retailer-profile.html" class="hover:text-blue-400">Profile</a>
+
+        <!-- Dropdown -->
+        <div class="relative">
+          <button id="dropdownButton" class="hover:text-blue-400 focus:outline-none">
+            Services ▾
+          </button>
+          <div id="dropdownMenu" class="absolute hidden bg-white text-black mt-2 rounded shadow-lg w-56 z-50">
+            <a href="retailer-New-PAN-Card-Dashboard.html" class="block px-4 py-2 hover:bg-gray-100">PAN Apply A49</a>
+            <a href="retailer-corruption-pan-cardappy.html" class="block px-4 py-2 hover:bg-gray-100">Correction PAN</a>
+            <a href="retailer-PAN-card-new-upload.html" class="block px-4 py-2 hover:bg-gray-100">Upload Document</a>
+            <a href="PAN card slip download.html" class="block px-4 py-2 hover:bg-gray-100">PAN Card Status</a>
+          </div>
+        </div>
+
+        <a href="retailer-pan-pammid.html" class="hover:text-blue-400">PAN Altruist ID</a>
+        <a href="/logout" class="hover:text-red-400">Logout</a>
+
+        <!-- Search Box -->
+        <div>
+          <input type="text" id="searchInput" placeholder="Search..." class="px-3 py-1 rounded text-black border focus:outline-none">
+        </div>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <div class="md:hidden">
+        <button id="mobile-menu-button" class="focus:outline-none">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2"
+               viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ✅ Dropdown Toggle Script -->
+<script>
+  const dropdownButton = document.getElementById("dropdownButton");
+  const dropdownMenu = document.getElementById("dropdownMenu");
+
+  dropdownButton.addEventListener("click", function () {
+    dropdownMenu.classList.toggle("hidden");
+  });
+
+  // Optional: Close dropdown if clicking outside
+  window.addEventListener("click", function (e) {
+    if (!dropdownButton.contains(e.target) && !dropdownMenu.contains(e.target)) {
+      dropdownMenu.classList.add("hidden");
+    }
+  });
+</script>
+
+
+ 
+  
+  <!-- Top Alert Banner -->
+  <div class="bg-red-100 text-red-800 p-4 text-sm font-semibold">
+    <h2 class="text-xl font-bold my-4">Welcome to RA Digital India PAN Center</h2>
+    📌 आपका पैन कार्ड इनकम टैक्स डिपार्टमेंट के जरिए बैन हो गया है या होल्ड हो गया है या पेंडिंग है या इधर सब कुछ यहां पर शो करेगा कृपा जरूर देखें
+    <br>
+    🔒 <strong>नोट:</strong> कृपया केवल उन्हीं ग्राहकों के आवेदन करें जिनके पास मान्य आधार कार्ड उपलब्ध है।
+  </div>
+
+   <!-- Dashboard Counters -->
+  <div class="grid grid-cols-2 md:grid-cols-6 gap-4 p-4 text-center text-white">
+    <div class="bg-yellow-400 rounded-lg py-4">Pending <br> <strong id="countPending">0</strong></div>
+    <div class="bg-green-400 rounded-lg py-4">Accepted <br> <strong id="countAccepted">0</strong></div>
+    <div class="bg-red-400 rounded-lg py-4">Rejected <br> <strong id="countRejected">0</strong></div>
+    <div class="bg-blue-400 rounded-lg py-4">Re Update <br> <strong id="countReUpdate">0</strong></div>
+    <div class="bg-pink-400 rounded-lg py-4">NSDL Hold <br> <strong id="countNsdlHold">0</strong></div>
+    <div class="bg-green-600 rounded-lg py-4">PAN Allotted <br> <strong id="countAllotted">0</strong></div>
+  </div>
+
+  <!-- New Pan Card Details Table -->
+  <div class="p-4 bg-white shadow rounded-lg m-4">
+    <div class="flex justify-between items-center mb-4">
+      <div class="text-lg font-bold">New Pan Card Details</div>
+      <div class="flex gap-2">
+        <button class="bg-purple-600 text-white px-3 py-2 rounded-md text-sm">Export</button>
+        <a href="retailer-newpanappy.html" class="bg-indigo-600 text-white px-3 py-2 rounded-md text-sm">+ New Pan Card Apply</a>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="overflow-x-auto">
+      <table class="min-w-full text-sm text-left text-gray-700 border">
+        <thead class="bg-gray-200 text-gray-700 uppercase">
+          <tr>
+            <th class="px-3 py-2">Parent's Name</th>
+            <th class="px-3 py-2">DOB</th>
+            <th class="px-3 py-2">Mobile</th>
+            <th class="px-3 py-2">Status</th>
+            <th class="px-3 py-2">Time</th>
+            <th class="px-3 py-2">Ack No</th>
+            <th class="px-3 py-2">Remark</th>
+          </tr>
+        </thead>
+        <tbody id="panTableBody">
+          <tr><td colspan="8" class="px-3 py-2 text-center">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    async function fetchPanData() {
+      try {
+        const res = await fetch('/api/all-pan');
+        const data = await res.json();
+        const tbody = document.getElementById('panTableBody');
+
+        // Reset counters
+        const counters = {
+          'Pending': 0,
+          'Accepted': 0,
+          'Rejected': 0,
+          'Re Update': 0,
+          'NSDL Hold': 0,
+          'PAN Allotted': 0
+        };
+
+        if (!data || data.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="8" class="px-3 py-2 text-center">No data available in table</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = '';
+
+        data.forEach(item => {
+          counters[item.status] = (counters[item.status] || 0) + 1;
+
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td class="px-3 py-2">${item.parentName}</td>
+            <td class="px-3 py-2">${item.dob}</td>
+            <td class="px-3 py-2">${item.mobile}</td>
+            <td class="px-3 py-2">${item.status}</td>
+            <td class="px-3 py-2">${item.time}</td>
+            <td class="px-3 py-2">${item.ackNo}</td>
+            <td class="px-3 py-2">${item.remark || '-'}</td>
+            <td class="px-3 py-2">
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+
+        // Update dashboard counts
+        document.getElementById('countPending').textContent = counters['Pending'];
+        document.getElementById('countAccepted').textContent = counters['Accepted'];
+        document.getElementById('countRejected').textContent = counters['Rejected'];
+        document.getElementById('countReUpdate').textContent = counters['Re Update'];
+        document.getElementById('countNsdlHold').textContent = counters['NSDL Hold'];
+        document.getElementById('countAllotted').textContent = counters['PAN Allotted'];
+
+      } catch (err) {
+        console.error('Error loading data', err);
+        document.getElementById('panTableBody').innerHTML = `<tr><td colspan="8" class="px-3 py-2 text-center text-red-500">Error loading data</td></tr>`;
+      }
+    }
+
+    async function deleteRecord(id) {
+      if (!confirm('Are you sure you want to delete this record?')) return;
+
+      try {
+        const res = await fetch(`/api/delete-pan/${id}`, { method: 'DELETE' });
+        const result = await res.json();
+        alert(result.message);
+        fetchPanData();
+      } catch (err) {
+        alert('Failed to delete record.');
+      }
+    }
+
+    async function editRecord(id) {
+      window.location.href = `retailer-newpanappy.html?id=${id}`;
+    }
+
+    fetchPanData();
+  </script>
+  
+<script>
+  window.onload = async () => {
+    try {
+      const res = await fetch('/me', {
+        method: 'GET',
+        credentials: 'include'
+      });
+
+      if (!res.ok) {
+        // User not logged in
+        window.location.href = '/admin-login.html';
+        return;
+      }
+
+      const data = await res.json();
+      // Populate profile if needed
+      console.log("User:", data);
+    } catch (err) {
+      alert("Session expired or not logged in.");
+      window.location.href = '/admin-login.html';
+    }
+  };
+</script>
+
+
+</body>
+</html>

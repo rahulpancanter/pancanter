@@ -1,0 +1,41 @@
+const mongoose = require('mongoose');
+
+const updatePanSchema = new mongoose.Schema({
+  pannumber: String,
+  category: String,
+  panType: String,
+  fullpanname: String,
+  mobile: String,
+  email: String,
+  income_source: String,
+  dob: Date,
+  gender: String,
+  residenceaddress: String,
+  pincode: String,
+  postoffice: String,
+  flatroomdoorblockno: String,
+  nameofpremisesbuildingvillage: String,
+  arealocalitytaluksubdivision: String,
+  towncitydistrict: String,
+  state: String,
+  parentoption: String,
+  father_name: String,
+  mother_name: String,
+  parentoptionyes: String,
+  aadhar_number: String,
+  voter_id: String,
+  identity_proof: String,
+  address_proof: String,
+  dob_proof: String,
+  area_code: String,
+  ao_type: String,
+  range_code: String,
+  ao_number: String,
+  processing_fee: Number,
+  aadhar_file: String,
+  pancard_pdf: String,
+  photo: String,
+  signature: String
+}, { timestamps: true });
+
+module.exports = mongoose.model('UpdatePan', updatePanSchema);

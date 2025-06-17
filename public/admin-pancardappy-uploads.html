@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>RA Digital india Pan Center</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8">
+  <div class="max-w-7xl mx-auto bg-white p-6 rounded shadow">
+    <h2 class="text-2xl font-bold mb-6 text-blue-700 text-center">PAN Upload Details</h2>
+    <table class="min-w-full table-auto border">
+      <thead class="bg-blue-200">
+        <tr>
+          <th class="p-2 border">Mobile Number</th>
+          <th class="p-2 border">Photo</th>
+          <th class="p-2 border">Signature</th>
+          <th class="p-2 border">PDF</th>
+          <th class="p-2 border">Submitted At</th>
+        </tr>
+      </thead>
+      <tbody id="uploadTable" class="text-center"></tbody>
+    </table>
+  </div>
+
+ <script>
+  fetch('/api/pan/uploads')
+    .then(res => res.json())
+    .then(data => {
+      const table = document.getElementById('uploadTable');
+      if (data.length === 0) {
+        table.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-red-500">No uploads found</td></tr>`;
+        return;
+      }
+      data.forEach(entry => {
+        const row = document.createElement('tr');
+        const date = entry.createdAt ? new Date(entry.createdAt).toLocaleString() : 'N/A';
+        const photoPath = entry.photo?.replace(/\\/g, '/');
+        const signaturePath = entry.signature?.replace(/\\/g, '/');
+        const pdfPath = entry.pancard_pdf?.replace(/\\/g, '/');
+
+        row.innerHTML = `
+          <td class="border p-2">${entry.application_id || 'N/A'}</td>
+          <td class="border p-2">
+            ${photoPath ? `<img src="/${photoPath}" class="w-20 h-20 object-cover" />` : 'No Photo'}
+          </td>
+          <td class="border p-2">
+            ${signaturePath ? `<img src="/${signaturePath}" class="w-20 h-20 object-cover" />` : 'No Signature'}
+          </td>
+          <td class="border p-2">
+            ${pdfPath ? `<a href="/${pdfPath}" target="_blank" class="text-blue-600 underline">View PDF</a>` : 'No PDF'}
+          </td>
+          <td class="border p-2">${date}</td>
+        `;
+        table.appendChild(row);
+      });
+    })
+    .catch(err => {
+      console.error('Fetch error:', err);
+      document.getElementById('uploadTable').innerHTML = `<tr><td colspan="5">Error loading data</td></tr>`;
+    });
+</script>
+
+</body>
+</html>

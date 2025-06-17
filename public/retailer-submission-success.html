@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>RA Digital india Pan Center</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-green-50 min-h-screen flex items-center justify-center">
+  <div class="bg-white p-8 rounded shadow text-center">
+    <h1 class="text-3xl font-bold text-green-700">✅ Submitted Successfully</h1>
+    <p class="mt-4 text-lg text-gray-700">Jab image signature aur PDF upload Karoge To is type Ka Hona chahie</p>
+    <p class="text-gray-600">PHOTO FULL NAME MOBILE NUMBER</p>
+    <p class="text-gray-600">signature FULL NAME MOBILE NUMBER</p>
+    <p class="text-gray-600">PAN FORM FULL NAME MOBILE NUMBER</p>
+
+    <a href="/retailer-PAN-card-new-upload.html" class="mt-6 inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+      PAN UPLOAD 
+    </a>
+  </div>
+  <script>
+  window.onload = async () => {
+    try {
+      const res = await fetch('/me', {
+        method: 'GET',
+        credentials: 'include'
+      });
+
+      if (!res.ok) {
+        // User not logged in
+        window.location.href = '/admin-login.html';
+        return;
+      }
+
+      const data = await res.json();
+      // Populate profile if needed
+      console.log("User:", data);
+    } catch (err) {
+      alert("Session expired or not logged in.");
+      window.location.href = '/admin-login.html';
+    }
+  };
+</script>
+</body>
+</html>

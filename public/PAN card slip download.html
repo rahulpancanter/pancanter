@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RA DIGITAL INDIA PORTAL</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+<!-- 🌐 Navbar -->
+<nav class="bg-gray-900 text-white shadow-lg">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="flex justify-between items-center h-16">
+      <div class="text-xl font-bold">
+        <a href="retailer-dashboard.html" class="text-white">RA DIGITAL INDIA PORTAL</a>
+      </div>
+
+      <div class="hidden md:flex items-center space-x-6">
+        <a href="retailer-dashboard.html" class="hover:text-blue-400">Home</a>
+        <a href="retailer-profile.html" class="hover:text-blue-400">Profile</a>
+
+        <div class="relative group">
+          <button class="hover:text-blue-400">Services</button>
+          <div class="absolute hidden group-hover:block bg-white text-black mt-2 rounded shadow-lg w-56 z-50">
+            <a href="retailer-New-PAN-Card-Dashboard.html" class="block px-4 py-2 hover:bg-gray-100">PAN Apply A49</a>
+            <a href="retailer-corruption-pan-cardappy.html" class="block px-4 py-2 hover:bg-gray-100">Correction PAN</a>
+            <a href="retailer-PAN-card-new-upload.html" class="block px-4 py-2 hover:bg-gray-100">Upload Document</a>
+            <a href="PAN card slip download.html" class="block px-4 py-2 hover:bg-gray-100">PAN Card Status</a>
+          </div>
+        </div>
+
+        <a href="retailer-pan-pammid.html" class="hover:text-blue-400">PAN Altruist ID</a>
+        <a href="/logout" class="hover:text-red-400">Logout</a>
+      </div>
+
+      <div class="md:hidden">
+        <button id="mobile-menu-button" class="focus:outline-none">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2"
+               viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 📱 Mobile Menu -->
+  <div id="mobile-menu" class="md:hidden hidden bg-gray-800 px-4 py-2 space-y-2">
+    <a href="retailer-dashboard.html" class="block text-white hover:text-blue-400">Home</a>
+    <a href="retailer-profile.html" class="block text-white hover:text-blue-400">Profile</a>
+    <a href="retailer-New-PAN-Card-Dashboard.html" class="block text-white hover:text-blue-400">PAN Apply A49</a>
+    <a href="retailer-corruption-pan-cardappy.html" class="block text-white hover:text-blue-400">Correction PAN</a>
+    <a href="retailer-PAN-card-new-upload.html" class="block text-white hover:text-blue-400">Upload Document</a>
+    <a href="PAN card slip download.html" class="block text-white hover:text-blue-400">PAN Status</a>
+    <a href="retailer-pan-pammid.html" class="block text-white hover:text-blue-400">PAN Altruist ID</a>
+    <a href="/logout" class="block text-red-400 hover:text-red-300">Logout</a>
+  </div>
+</nav>
+
+<!-- 🟢 Modal -->
+<div id="autoModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+  <div class="bg-white p-6 rounded-2xl shadow-2xl max-w-md w-full relative">
+    <button onclick="document.getElementById('autoModal').classList.add('hidden')" 
+            class="absolute top-2 right-3 text-gray-500 hover:text-red-600 text-2xl font-bold">
+      &times;
+    </button>
+    <h2 class="text-xl font-semibold text-blue-600 mb-4">📄 कृपया ध्यान दें</h2>
+    <p class="text-gray-700 text-sm leading-relaxed">
+      कृपया यहां अपना PAN कार्ड सबमिट करें और <strong>अपना ईमेल आईडी</strong> दर्ज करें।<br><br>
+      यदि आपका आवेदन सफलतापूर्वक प्रोसेस हो चुका होगा, तो:
+      <ul class="list-disc pl-5 my-2 text-gray-600 text-sm">
+        <li>आपका <strong>नाम, ईमेल आईडी, मोबाइल नंबर</strong> और <strong>PAN स्लिप</strong> यहां प्रदर्शित हो जाएगा।</li>
+        <li>साथ ही, आपकी <strong>PAN स्लिप</strong> ऑटोमैटिक <strong>आपके ईमेल पर</strong> भी भेज दी जाती है।</li>
+      </ul>
+      यदि किसी प्रकार की दिक्कत हो, तो कृपया <strong>7061805159</strong> पर संपर्क करें (WhatsApp या कॉल)।<br><br>
+      धन्यवाद 🙏
+    </p>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="container fade-in">
+  <h2>Welcome to RA Digital India PAN Center</h2>
+  <!-- Add your content here -->
+</div>
+
+<!-- 🔍 Main Section -->
+<div class="p-6">
+  <div class="mb-4">
+    <label class="block mb-1 font-semibold">Enter Email (or leave blank to show Nepal records):</label>
+    <input type="email" id="loginEmail" placeholder="example@example.com" class="border p-2 rounded w-full md:w-1/3" />
+    <button onclick="loadData()" class="bg-blue-600 text-white px-4 py-2 rounded mt-2">Load My Data</button>
+  </div>
+
+  <div class="w-full p-4 bg-gray-50 rounded border">
+    <table class="w-full table-auto border border-gray-300">
+      <thead class="bg-blue-100">
+        <tr>
+          <th class="p-3 border-b">Name</th>
+          <th class="p-3 border-b">Acknowledgment No</th>
+          <th class="p-3 border-b">Email</th>
+          <th class="p-3 border-b">Status</th>
+          <th class="p-3 border-b">PDF</th>
+        </tr>
+      </thead>
+      <tbody id="dataBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- 🚀 Scripts -->
+<script>
+  document.getElementById('mobile-menu-button').addEventListener('click', () => {
+    document.getElementById('mobile-menu').classList.toggle('hidden');
+  });
+
+  async function loadData() {
+    const email = loginEmail.value.trim().toLowerCase();
+    const res = await fetch('http://localhost:3000/api/pan/all');
+    const data = await res.json();
+
+    let filtered;
+    if (email) {
+      filtered = data.filter(entry => entry.email.toLowerCase() === email);
+    } else {
+      // Assuming each record has a `country` or `state` field, e.g., state: 'Nepal'
+      filtered = data.filter(entry => entry.state?.toLowerCase().includes('nepal') || entry.country?.toLowerCase().includes('nepal'));
+    }
+
+    dataBody.innerHTML = filtered.map(entry => `
+      <tr>
+        <td class="p-3 border-b">${entry.fullName}</td>
+        <td class="p-3 border-b">${entry.acknowledgmentNo}</td>
+        <td class="p-3 border-b">${entry.email}</td>
+        <td class="p-3 border-b">${entry.status}</td>
+        <td class="p-3 border-b">
+          <a href="http://localhost:3000/uploads/${entry.pdfFileName}" target="_blank" class="text-blue-600 underline">
+            ${entry.pdfFileName || 'N/A'}
+          </a>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  // Modal and session check
+  window.onload = async () => {
+    setTimeout(() => {
+      document.getElementById('autoModal').classList.remove('hidden');
+    }, 1000);
+
+    try {
+      const res = await fetch('/me', { method: 'GET', credentials: 'include' });
+      if (!res.ok) return window.location.href = '/admin-login.html';
+    } catch {
+      alert("Session expired or not logged in.");
+      window.location.href = '/admin-login.html';
+    }
+  };
+</script>
+
+</body>
+</html>

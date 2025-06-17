@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RA Digital India Pan Center</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background-color: #f7fafc;
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 8px;
+      margin-top: 2rem;
+    }
+    .form-section {
+      margin-bottom: 1.5rem;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .logout-btn {
+      background: red;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 5px;
+    }
+    .hidden {
+      display: none !important;
+    }
+    @media (max-width: 768px) {
+      .form-row > div {
+        margin-bottom: 1rem;
+      }
+    }
+    .fade-in {
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+
+<body class="bg-gray-100 text-gray-900">
+
+<!-- 🌐 Navbar -->
+<nav class="bg-gray-900 text-white shadow-lg">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="flex justify-between items-center h-16">
+      <div class="text-xl font-bold">
+        <a href="retailer-dashboard.html" class="text-white">RA DIGITAL INDIA PORTAL</a>
+      </div>
+
+      <div class="hidden md:flex items-center space-x-6">
+        <a href="retailer-dashboard.html" class="hover:text-blue-400">Home</a>
+        <a href="retailer-profile.html" class="hover:text-blue-400">Profile</a>
+
+        <!-- Dropdown -->
+        <div class="relative group">
+          <button class="hover:text-blue-400">Services ▾</button>
+          <div class="absolute hidden group-hover:block bg-white text-black mt-2 rounded shadow-lg w-56 z-50">
+            <a href="retailer-New-PAN-Card-Dashboard.html" class="block px-4 py-2 hover:bg-gray-100">PAN Apply A49</a>
+            <a href="retailer-corruption-pan-cardappy.html" class="block px-4 py-2 hover:bg-gray-100">Correction PAN</a>
+            <a href="retailer-PAN-card-new-upload.html" class="block px-4 py-2 hover:bg-gray-100">Upload Document</a>
+            <a href="PAN card slip download.html" class="block px-4 py-2 hover:bg-gray-100">PAN Card Status</a>
+          </div>
+        </div>
+
+        <a href="retailer-pan-pammid.html" class="hover:text-blue-400">PAN Altruist ID</a>
+        <a href="/logout" class="hover:text-red-400">Logout</a>
+      </div>
+
+      <!-- Mobile Button -->
+      <div class="md:hidden">
+        <button id="mobile-menu-button" class="focus:outline-none">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2"
+               viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<div class="container fade-in">
+  <h2>Welcome to RA Digital India PAN Center</h2>
+  <!-- Add your content here -->
+</div>
+
+<div class="alert alert-danger mt-4 text-sm">
+  पैन कार्ड नया अप्लाई करने के लिए आपका 115 रुपये आपके वॉलेट से कटेगा 
+</div>
+
+ <!-- 🟢 Apple-style Modal -->
+<div id="autoModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+  <div class="bg-white p-6 rounded-2xl shadow-2xl max-w-md w-full fade-in relative">
+    <!-- Close Button -->
+    <button onclick="document.getElementById('autoModal').classList.add('hidden')" 
+            class="absolute top-2 right-3 text-gray-500 hover:text-red-600 text-2xl font-bold">
+      &times;
+    </button>
+
+    <h2 class="text-xl font-semibold text-red-600 mb-4">📢 कृपा ध्यान दें</h2>
+    <p class="text-gray-700 text-sm leading-relaxed">
+      नए पैन कार्ड के लिए आवेदन करने पर आपके <strong>वॉलेट से ₹115</strong> कट जाएंगे। इससे कोई फर्क नहीं पड़ता कि आपका मोबाइल नंबर <strong>आधार से लिंक है या नहीं</strong>।<br><br>
+        <strong>आपको अपना अंगूठा लगाने की जरूरत नहीं है</strong>। बस अपने फॉर्म पर <strong>फोटो और सिग्नेचर</strong> अपलोड करें।<br><br>
+        आपका फॉर्म <strong>अपने आप अप्लाई</strong> हो जाएगा और <strong>रसीद आपके ईमेल</strong> पर भेज दी जाएगी।<br><strong>और आप इसमे जीरो से लेकर 18 तक का पैन कार्ड भी बना सकते हैं और 18 से ऊपर का भी बना सकते हैं</strong>
+      धन्यवाद 🙏
+    </p>
+  </div>
+</div>
+
+<div class="container mt-5">
+  <h2 class="text-center text-primary mb-4"> correction PAN Card Application</h2>
+
+  <form id="updateForm" enctype="multipart/form-data">
+    <!-- PAN Info -->
+    <div class="form-row form-section">
+      <div class="col-md-4"><input type="text" name="pannumber" class="form-control" placeholder="PAN CARD NUMBER" required></div>
+      <div class="col-md-4">
+        <select name="category" class="form-control" required>
+          <option value="">Category of Applicant</option>
+          <option>Individual</option>
+          <option>Firm</option>
+          <option>Company</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <select name="panType" class="form-control" required>
+          <option value="">Type of PAN</option>
+          <option>Physical & e-PAN</option>
+          <option>E-PAN Only</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Personal Info -->
+    <div class="form-row form-section">
+      <div class="col-md-4"><input name="fullpanname" class="form-control" placeholder="Full Name" required></div>
+      <div class="col-md-4"><input name="mobile" class="form-control" placeholder="Mobile Number" required></div>
+      <div class="col-md-4"><input name="email" type="email" class="form-control" placeholder="Email" required></div>
+    </div>
+
+    <!-- Other Details -->
+    <div class="form-row form-section">
+      <div class="col-md-4">
+        <select name="income_source" class="form-control" required>
+          <option value="">Source of Income</option>
+          <option value="noincome">No Income</option>
+          <option value="salary">Salary</option>
+          <option value="business">Business</option>
+        </select>
+      </div>
+      <div class="col-md-4"><input type="date" name="dob" class="form-control" required></div>
+      <div class="col-md-4">
+        <select name="gender" class="form-control" required>
+          <option value="">Gender</option>
+          <option>Male</option>
+          <option>Female</option>
+          <option>Other</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Address -->
+    <div class="form-row form-section">
+      <div class="col-md-4">
+        <select name="residenceaddress" class="form-control" required>
+          <option value="">Send PAN Card To</option>
+          <option value="residenceaddress">Residence Address</option>
+          <option value="officeaddress">Office Address</option>
+        </select>
+      </div>
+      <div class="col-md-4"><input name="pincode" class="form-control" placeholder="Pincode" required></div>
+      <div class="col-md-4"><input name="postoffice" class="form-control" placeholder="Post Office" required></div>
+    </div>
+
+    <div class="form-row form-section">
+      <div class="col-md-4"><input name="flatroomdoorblockno" class="form-control" placeholder="Flat / Block No." required></div>
+      <div class="col-md-4"><input name="nameofpremisesbuildingvillage" class="form-control" placeholder="Building / Village" required></div>
+      <div class="col-md-4"><input name="arealocalitytaluksubdivision" class="form-control" placeholder="Area / Taluk" required></div>
+    </div>
+
+    <div class="form-row form-section">
+      <div class="col-md-6"><input name="towncitydistrict" class="form-control" placeholder="Town / District" required></div>
+      <div class="col-md-6"><input name="state" class="form-control" placeholder="State" required></div>
+    </div>
+
+    <!-- Parent Info -->
+    <div class="form-row form-section">
+      <div class="col-md-6">
+        <select id="parentOption" name="parentoption" class="form-control" required>
+          <option value="">Select Father or Mother</option>
+          <option value="father">Father</option>
+          <option value="mother">Mother</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <input id="fatherInput" name="father_name" class="form-control mt-2 hidden" placeholder="Father's Full Name">
+        <input id="motherInput" name="mother_name" class="form-control mt-2 hidden" placeholder="Mother's Full Name">
+      </div>
+    </div>
+
+    <!-- Aadhar/Voter -->
+    <div class="form-row form-section">
+      <div class="col-md-6">
+        <select id="yesNoOption" name="parentoptionyes" class="form-control" required>
+          <option value="">Do you have Aadhar?</option>
+          <option value="YES">YES</option>
+          <option value="NO">NO</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <input id="aadharInput" name="aadhar_number" class="form-control mt-2 hidden" placeholder="Aadhar Number">
+        <input id="voterInput" name="voter_id" class="form-control mt-2 hidden" placeholder="Voter ID Number">
+      </div>
+    </div>
+
+    <!-- Proofs -->
+    <div class="form-row form-section">
+      <div class="col-md-4">
+        <select name="identity_proof" class="form-control" required>
+          <option value="">Identity Proof</option>
+          <option value="aadhar">Aadhar</option>
+          <option value="voter">Voter ID</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <select name="address_proof" class="form-control" required>
+          <option value="">Address Proof</option>
+          <option value="passport">Passport</option>
+          <option value="aadhar">Aadhar</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <select name="dob_proof" class="form-control" required>
+          <option value="">DOB Proof</option>
+          <option value="birthcertificate">Birth Certificate</option>
+          <option value="aadhar">Aadhar</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- AO Info -->
+    <div class="form-row form-section">
+      <div class="col-md-3"><input name="area_code" class="form-control" placeholder="Area Code" readonly></div>
+      <div class="col-md-3"><input name="ao_type" class="form-control" placeholder="AO Type" readonly></div>
+      <div class="col-md-3"><input name="range_code" class="form-control" placeholder="Range Code" readonly></div>
+      <div class="col-md-3"><input name="ao_number" class="form-control" placeholder="AO Number" readonly></div>
+    </div>
+
+    <!-- File Uploads -->
+    <div class="form-group"><label>Aadhar File (PDF)</label><input type="file" name="aadhar_file" class="form-control" accept="application/pdf" required></div>
+    <div class="form-group"><label>PAN Card PDF</label><input type="file" name="pancard_pdf" class="form-control" accept="application/pdf" required></div>
+    <div class="form-group"><label>Photo</label><input type="file" name="photo" class="form-control" accept="image/*" required></div>
+    <div class="form-group"><label>Signature</label><input type="file" name="signature" class="form-control" accept="image/*" required></div>
+
+    <!-- Final -->
+    <div class="form-row form-section mt-4">
+      <div class="col-md-6"><input name="processing_fee" type="number" value="115" readonly class="form-control"></div>
+      <div class="col-md-6 text-right"><button type="submit" class="btn btn-success px-4">Submit Application</button></div>
+    </div>
+
+    <div id="result" class="mt-4 text-center text-success font-weight-bold"></div>
+  </form>
+</div>
+
+<script>
+  document.getElementById('updateForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+    try {
+      const res = await fetch('/submit-corrupdatepancard', {
+        method: 'POST',
+        body: formData
+      });
+      if (res.ok) {
+        window.location.href = '/retailer-submission-success.html';
+      } else {
+        const err = await res.text();
+        alert('Error: ' + err);
+      }
+    } catch (err) {
+      alert("Submission Failed");
+      console.error(err);
+    }
+  });
+
+  document.getElementById('parentOption').addEventListener('change', function () {
+    const fatherInput = document.getElementById('fatherInput');
+    const motherInput = document.getElementById('motherInput');
+    fatherInput.classList.add('hidden');
+    motherInput.classList.add('hidden');
+    fatherInput.value = '';
+    motherInput.value = '';
+    if (this.value === 'father') fatherInput.classList.remove('hidden');
+    if (this.value === 'mother') motherInput.classList.remove('hidden');
+  });
+
+  document.getElementById('yesNoOption').addEventListener('change', function () {
+    const aadharInput = document.getElementById('aadharInput');
+    const voterInput = document.getElementById('voterInput');
+    aadharInput.classList.add('hidden');
+    voterInput.classList.add('hidden');
+    aadharInput.value = '';
+    voterInput.value = '';
+    if (this.value === 'YES') aadharInput.classList.remove('hidden');
+    if (this.value === 'NO') voterInput.classList.remove('hidden');
+  });
+</script>
+<script>
+  window.onload = async () => {
+    try {
+      const res = await fetch('/me', {
+        method: 'GET',
+        credentials: 'include'
+      });
+
+      if (!res.ok) {
+        // User not logged in
+        window.location.href = '/admin-login.html';
+        return;
+      }
+
+      const data = await res.json();
+      // Populate profile if needed
+      console.log("User:", data);
+    } catch (err) {
+      alert("Session expired or not logged in.");
+      window.location.href = '/admin-login.html';
+    }
+  };
+</script>
+<script>
+  // Auto-open modal after 1 second
+  window.onload = () => {
+    setTimeout(() => {
+      document.getElementById('autoModal').classList.remove('hidden');
+    }, 1000);
+  };
+</script>
+
+</body>
+</html>

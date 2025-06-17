@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RA Digital india Pan Center</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+    }
+  </style>
+</head>
+
+<body class="p-4">
+<!-- Navbar -->
+<nav class="bg-gray-800 text-white shadow-md">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+    <a href="#" class="text-lg font-bold">RA DIGITAL INDIA PORTAL</a>
+    <div class="hidden md:flex space-x-4 items-center">
+      <a href="retailer-dashboard.html" class="hover:text-yellow-300">Home</a>
+      <a href="retailer-profile.html" class="hover:text-yellow-300">Profile</a>
+
+      <!-- Toggle dropdown -->
+      <div class="relative">
+        <button id="dropdownToggle" class="hover:text-yellow-300 focus:outline-none">Services ▾</button>
+        <div id="dropdownMenu" class="absolute hidden bg-white text-black rounded shadow-lg mt-2 p-2 space-y-1 z-50">
+          <a href="retailer-New-PAN-Card-Dashboard.html" class="block hover:bg-gray-100 px-4 py-1">PAN Card Apply A49</a>
+          <a href="retailer-PAN-card-new-upload.html" class="block hover:bg-gray-100 px-4 py-1">PAN CARD UPLOAD DOCUMENT</a>
+          <a href="PAN card slip download.html" class="block hover:bg-gray-100 px-4 py-1">PAN CARD Status</a>
+          <a href="retailer-corruption-pan-cardappy.html" class="block hover:bg-gray-100 px-4 py-1">Correction PAN Card Apply</a>
+        </div>
+      </div>
+
+      <a href="retailer-pan-pammid.html" class="hover:text-yellow-300">Pan Altruist ID Apply</a>
+    </div>
+
+    <div class="flex items-center space-x-2">
+      <input type="text" placeholder="Search" class="px-2 py-1 rounded border text-black">
+      <button class="bg-yellow-400 text-black px-3 py-1 rounded hover:bg-yellow-500">Search</button>
+    </div>
+  </div>
+</nav>
+
+<!-- Script for dropdown toggle -->
+<script>
+  const dropdownToggle = document.getElementById('dropdownToggle');
+  const dropdownMenu = document.getElementById('dropdownMenu');
+
+  dropdownToggle.addEventListener('click', () => {
+    dropdownMenu.classList.toggle('hidden');
+  });
+
+  // Optional: Click outside to close
+  window.addEventListener('click', (e) => {
+    if (!dropdownToggle.contains(e.target) && !dropdownMenu.contains(e.target)) {
+      dropdownMenu.classList.add('hidden');
+    }
+  });
+</script>
+
+  <!-- Auto Popup Modal -->
+  <div id="autoModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+    <div class="bg-white p-6 rounded-2xl shadow-2xl max-w-md w-full relative">
+      <button onclick="document.getElementById('autoModal').classList.add('hidden')" 
+              class="absolute top-2 right-3 text-gray-500 hover:text-red-600 text-2xl font-bold">
+        &times;
+      </button>
+      <h2 class="text-xl font-semibold text-red-600 mb-4">📢 कृपा ध्यान दें</h2>
+      <p class="text-gray-700 text-sm leading-relaxed">
+        पेमेंट गेटवे फिलहाल काम नहीं कर रहा है। कृपया <strong>7061805159</strong> पर व्हाट्सएप मैसेज करें या कॉल करें।
+        आप जितनी राशि अकाउंट में जमा कराना चाहते हैं, वह आपके वॉलेट में ऐड कर दी जाएगी।<br><br>
+        हम जल्द ही ऑटोमैटिक पेमेंट गेटवे की सुविधा चालू करेंगे।<br><br> धन्यवाद 🙏
+      </p>
+    </div>
+  </div>
+
+  <!-- Service Section -->
+  <section class="mt-10 max-w-6xl mx-auto">
+    <h3 class="text-xl font-bold text-center text-gray-800 mb-2">Welcome to RA Digital India PAN Center</h3>
+    <marquee class="text-red-600 font-semibold mb-6">Apply new/correction PAN card – ₹115 only</marquee>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div class="text-center bg-white p-4 rounded-lg shadow-md">
+        <img src="img/pancard-uti.jpg" alt="New PAN" class="mx-auto mb-2 h-32 object-cover">
+        <a href="retailer-newpanappy.html" class="text-blue-600 font-medium hover:underline">New Pan Card Apply</a>
+      </div>
+      <div class="text-center bg-white p-4 rounded-lg shadow-md">
+        <img src="img/pan-correction-online.jpg" alt="Correction" class="mx-auto mb-2 h-32 object-cover">
+        <a href="retailer-corruption-pan-cardappy.html" class="text-blue-600 font-medium hover:underline">Correction PAN Card</a>
+      </div>
+      <div class="text-center bg-white p-4 rounded-lg shadow-md">
+        <img src="img/Instant-E-pan-card-online-apply-e-pan-in-2024.jpg.webp" class="mx-auto mb-2 h-32 object-cover">
+        <a href="https://eportal.incometax.gov.in/iec/foservices/#/pre-login/instant-e-pan" class="text-blue-600 font-medium hover:underline">Free ePAN Apply</a>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div class="text-center bg-white p-4 rounded-lg shadow-md">
+        <img src="img/pan altruist appy.jpg" class="mx-auto mb-2 h-32 object-cover">
+        <a href="retailer-pan-pammid.html" class="text-blue-600 font-medium hover:underline">Pan Altruist Apply</a>
+      </div>
+      <div class="text-center bg-white p-4 rounded-lg shadow-md">
+        <img src="img/pan loginaltruistindia.jpg" class="mx-auto mb-2 h-32 object-cover">
+        <a href="https://pan.altruistindia.com/" class="text-blue-600 font-medium hover:underline">EKYC Pan Card</a>
+      </div>
+      <div class="text-center bg-white p-4 rounded-lg shadow-md">
+        <img src="img/pan card  Correction Pan Status user.jpg" class="mx-auto mb-2 h-32 object-cover">
+        <a href="PAN card slip download.html" class="text-blue-600 font-medium hover:underline">Check PAN Status</a>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div class="text-center bg-white p-4 rounded-lg shadow-md">
+        <img src="img/freepancard2.0.jpg" class="mx-auto mb-2 h-32 object-cover">
+        <a href="https://www.onlineservices.nsdl.com/paam/ReprintEPan.html" class="text-blue-600 font-medium hover:underline">Free PAN 2.0</a>
+      </div>
+      <div class="text-center bg-white p-4 rounded-lg shadow-md">
+        <img src="img/NSDL Pamm Id Login.jpg" class="mx-auto mb-2 h-32 object-cover">
+        <a href="https://www.onlineservices.nsdl.com/paam/" class="text-blue-600 font-medium hover:underline">NSDL Pamm Login</a>
+      </div>
+      <div class="text-center bg-white p-4 rounded-lg shadow-md">
+        <img src="img/UTIPSALOGIN.jpg" class="mx-auto mb-2 h-32 object-cover">
+        <a href="https://www.psaonline.utiitsl.com/psapanservices/forms/login.html/loginHome" class="text-blue-600 font-medium hover:underline">UTI PSA Login</a>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="text-center bg-white p-4 rounded-lg shadow-md">
+        <img src="img/Apply Pan Card Status.png" class="mx-auto mb-2 h-32 object-cover">
+        <a href="passport.html" class="text-red-600 font-medium hover:underline">Passport Apply (Coming Soon)</a>
+      </div>
+      <div class="text-center bg-white p-4 rounded-lg shadow-md">
+        <img src="img/freepancard2.0.jpg" class="mx-auto mb-2 h-32 object-cover">
+        <a href="passportsect.html" class="text-red-600 font-medium hover:underline">Passport Less (Coming Soon)</a>
+      </div>
+      <div class="text-center bg-white p-4 rounded-lg shadow-md">
+        <img src="img/uti psa login.jpg" class="mx-auto mb-2 h-32 object-cover">
+        <a href="./utipsaid.html" class="text-red-600 font-medium hover:underline">UTI PSA ID Create (Coming Soon)</a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    window.onload = async () => {
+      setTimeout(() => {
+        document.getElementById('autoModal').classList.remove('hidden');
+      }, 1000);
+
+      try {
+        const res = await fetch('/me', {
+          method: 'GET',
+          credentials: 'include'
+        });
+
+        if (!res.ok) {
+          window.location.href = '/admin-login.html';
+          return;
+        }
+
+        const data = await res.json();
+        console.log("User:", data);
+      } catch (err) {
+        alert("Session expired or not logged in.");
+        window.location.href = '/admin-login.html';
+      }
+    };
+  </script>
+
+</body>
+</html>

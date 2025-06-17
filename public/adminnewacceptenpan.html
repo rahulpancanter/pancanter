@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RA Digital India PAN Center</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+  <!-- PAN Form -->
+  <form id="panForm" class="max-w-xl mx-auto mt-10 p-4 bg-white rounded shadow space-y-4">
+    <input type="hidden" name="id" id="recordId" />
+    <input name="parentName" placeholder="Parent's Name" required class="w-full p-2 border rounded" />
+    <input name="dob" type="date" required class="w-full p-2 border rounded" />
+    <input name="mobile" placeholder="Mobile" required class="w-full p-2 border rounded" />
+    <select name="status" class="w-full p-2 border rounded">
+      <option value="Pending">Pending</option>
+      <option value="Accepted">Accepted</option>
+      <option value="Rejected">Rejected</option>
+      <option value="Re Update">Re Update</option>
+      <option value="NSDL Hold">NSDL Hold</option>
+      <option value="PAN Allotted">PAN Allotted</option>
+    </select>
+    <input name="time" placeholder="Time" required class="w-full p-2 border rounded" />
+    <input name="ackNo" placeholder="Acknowledgement No" required class="w-full p-2 border rounded" />
+    <input name="remark" placeholder="Remark (optional)" class="w-full p-2 border rounded" />
+    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Submit</button>
+    <p id="message" class="text-center text-sm text-red-500"></p>
+  </form>
+
+  <!-- Data Table -->
+  <div class="max-w-6xl mx-auto mt-8 p-4 bg-white rounded shadow">
+    <h2 class="text-lg font-bold mb-4">PAN Applications</h2>
+    <table class="min-w-full text-sm border">
+      <thead class="bg-gray-200">
+        <tr>
+          <th class="px-2 py-1">Parent</th>
+          <th class="px-2 py-1">DOB</th>
+          <th class="px-2 py-1">Mobile</th>
+          <th class="px-2 py-1">Status</th>
+          <th class="px-2 py-1">Time</th>
+          <th class="px-2 py-1">AckNo</th>
+          <th class="px-2 py-1">Remark</th>
+          <th class="px-2 py-1">Actions</th>
+        </tr>
+      </thead>
+      <tbody id="dataTable"></tbody>
+    </table>
+  </div>
+
+<script>
+  const form = document.getElementById('panForm');
+  const dataTable = document.getElementById('dataTable');
+  const message = document.getElementById('message');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+    const method = data.id ? 'PUT' : 'POST';
+    const url = data.id ? `/api/update-pan/${data.id}` : '/api/submit-pan';
+
+    try {
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      const result = await res.json();
+      message.textContent = result.message || 'Done';
+      form.reset();
+      form.id.value = '';
+      loadData();
+    } catch (err) {
+      console.error(err);
+      message.textContent = 'Something went wrong!';
+    }
+  });
+
+  async function loadData() {
+    const res = await fetch('/api/all-pan');
+    const data = await res.json();
+    dataTable.innerHTML = '';
+
+    data.forEach(item => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td class="border px-2 py-1">${item.parentName}</td>
+        <td class="border px-2 py-1">${item.dob}</td>
+        <td class="border px-2 py-1">${item.mobile}</td>
+        <td class="border px-2 py-1">${item.status}</td>
+        <td class="border px-2 py-1">${item.time}</td>
+        <td class="border px-2 py-1">${item.ackNo}</td>
+        <td class="border px-2 py-1">${item.remark || '-'}</td>
+        <td class="border px-2 py-1">
+          <button class="text-blue-600 hover:underline" onclick="editRecord('${item._id}')">Edit</button> |
+          <button class="text-red-600 hover:underline" onclick="deleteRecord('${item._id}')">Delete</button>
+        </td>
+      `;
+      dataTable.appendChild(row);
+    });
+  }
+
+  async function editRecord(id) {
+    const res = await fetch(`/api/pan/${id}`);
+    const item = await res.json();
+    form.parentName.value = item.parentName;
+    form.dob.value = item.dob;
+    form.mobile.value = item.mobile;
+    form.status.value = item.status;
+    form.time.value = item.time;
+    form.ackNo.value = item.ackNo;
+    form.remark.value = item.remark;
+    form.id.value = item._id;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  async function deleteRecord(id) {
+    if (!confirm('Delete this record?')) return;
+    const res = await fetch(`/api/delete-pan/${id}`, { method: 'DELETE' });
+    const result = await res.json();
+    alert(result.message);
+    loadData();
+  }
+
+  loadData();
+</script>
+</body>
+</html>

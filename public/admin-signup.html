@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Signup</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+
+  <div class="w-full max-w-md p-8 bg-white rounded-2xl shadow-lg">
+    <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Sign Up</h2>
+
+    <form id="signupForm" enctype="multipart/form-data" method="POST" class="space-y-4">
+      <input type="text" name="name" placeholder="Full Name" required
+             class="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" />
+      
+      <input type="email" name="email" placeholder="Email" required
+             class="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" />
+      
+      <input type="password" name="password" placeholder="Password" required
+             class="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" />
+      
+      <input type="text" name="mobile" placeholder="Mobile Number" required
+             class="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" />
+      
+      <input type="text" name="address" placeholder="Address" required
+             class="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" />
+      
+      <select name="role" required
+              class="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <option value="">Select Role</option>
+        <option value="admin">Admin</option>
+        <option value="retailer">Retailer</option>
+      </select>
+
+      <!-- If you later add photo upload:
+      <input type="file" name="photo" accept="image/*"
+             class="w-full px-4 py-2 border rounded-xl" />
+      -->
+
+      <button type="submit"
+              class="w-full bg-blue-600 text-white py-2 rounded-xl hover:bg-blue-700 transition duration-300">
+        Sign Up
+      </button>
+    </form>
+
+    <p class="text-sm text-gray-600 mt-4 text-center">
+      Already have an account? <a href="admin-login.html" class="text-blue-500 hover:underline">Login here</a>
+    </p>
+  </div>
+
+  <script>
+    document.getElementById('signupForm').addEventListener('submit', async e => {
+      e.preventDefault();
+      const form = e.target;
+      const formData = new FormData(form);
+
+      const res = await fetch('/signup', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const result = await res.json();
+      alert(result.message);
+      if (res.ok) window.location.href = 'admin-login.html';
+    });
+  </script>
+
+</body>
+</html>
