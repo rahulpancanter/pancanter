@@ -63,10 +63,9 @@ app.get('/retailer-PAN-card-new-upload', (req, res) => res.sendFile(path.join(__
 app.get('/retailer-submission-success', (req, res) => res.sendFile(path.join(__dirname, 'public', 'retailer-submission-success.html')));
 app.get('/retailer-PAN-card-new-upload', (req, res) => res.sendFile(path.join(__dirname, 'public', 'retailer-PAN-card-new-upload.html')));
 
-<<<<<<< HEAD
+
 // ✅ Signup Route
-=======
->>>>>>> b13bcc5 (Your commit message here)
+
 app.post('/signup', upload.single('photo'), async (req, res) => {
   const { name, email, password, role, mobile, address } = req.body;
 
