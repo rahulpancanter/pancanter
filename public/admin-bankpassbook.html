@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bank Passbook Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+
+  <div class="max-w-6xl mx-auto mt-10 bg-white p-6 rounded shadow">
+    <h2 class="text-2xl font-bold mb-6 text-gray-800">📑 Bank Passbook Entries</h2>
+    <table class="w-full border text-sm" id="psaTable">
+      <thead class="bg-gray-200 text-xs">
+        <tr>
+          <th class="border px-2 py-1">Full Name</th>
+          <th class="border px-2 py-1">Username</th>
+          <th class="border px-2 py-1">Mobile</th>
+          <th class="border px-2 py-1">Full Address</th>
+          <th class="border px-2 py-1">Account No</th>
+          <th class="border px-2 py-1">IFSC</th>
+          <th class="border px-2 py-1">State</th>
+          <th class="border px-2 py-1">PIN</th>
+          <th class="border px-2 py-1">Shop Name</th>
+          <th class="border px-2 py-1">Aadhaar</th>
+          <th class="border px-2 py-1">PAN</th>
+          <th class="border px-2 py-1">Bank Name</th>
+          <th class="border px-2 py-1">PDF</th>
+          <th class="border px-2 py-1">✏️</th>
+          <th class="border px-2 py-1">❌</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+<script>
+  async function loadPsaData() {
+    try {
+      const res = await fetch('/all/get-bankpassbook');
+      const data = await res.json();
+      const tableBody = document.querySelector('#psaTable tbody');
+      tableBody.innerHTML = '';
+
+      data.forEach(entry => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td class="border px-2 py-1"><span class="name">${entry.fullname}</span></td>
+          <td class="border px-2 py-1"><span class="username">${entry.username}</span></td>
+          <td class="border px-2 py-1"><span class="mobile">${entry.mobile}</span></td>
+          <td class="border px-2 py-1"><span class="fulladdress">${entry.fulladdress}</span></td>
+          <td class="border px-2 py-1"><span class="accountType">${entry.accountType}</span></td>
+          <td class="border px-2 py-1"><span class="ifsc">${entry.ifsc}</span></td>
+          <td class="border px-2 py-1"><span class="state">${entry.state}</span></td>
+          <td class="border px-2 py-1"><span class="pin">${entry.pin}</span></td>
+          <td class="border px-2 py-1"><span class="shopname">${entry.shopname}</span></td>
+          <td class="border px-2 py-1"><span class="aadhaar">${entry.aadhaar}</span></td>
+          <td class="border px-2 py-1"><span class="pan">${entry.pan}</span></td>
+          <td class="border px-2 py-1"><span class="bank-name">${entry['bank-name'] || ''}</span></td>
+          <td class="border px-2 py-1 pdf-cell">
+            ${entry.pdfPath ? `<a href="/${entry.pdfPath}" target="_blank">📄 PDF</a>` : 'N/A'}
+          </td>
+          <td class="border px-2 py-1 text-center">
+            <button onclick="editRow('${entry._id}', this)" class="text-yellow-600">✏️</button>
+          </td>
+          <td class="border px-2 py-1 text-center">
+            <button onclick="deleteRow('${entry._id}')" class="text-red-600">❌</button>
+          </td>
+        `;
+        tableBody.appendChild(row);
+      });
+    } catch (err) {
+      console.error('Failed to load data:', err);
+    }
+  }
+
+  async function deleteRow(id) {
+    if (confirm('Are you sure to delete this entry?')) {
+      try {
+        const res = await fetch(`/delete-bankpassbook/${id}`, { method: 'DELETE' });
+        const result = await res.json();
+        alert(result.message || 'Deleted');
+        loadPsaData();
+      } catch (err) {
+        console.error('Delete failed:', err);
+        alert('Failed to delete');
+      }
+    }
+  }
+
+  async function editRow(id, btn) {
+    const row = btn.closest('tr');
+    const fields = [
+      'name', 'username', 'mobile', 'fulladdress', 'accountType', 'ifsc', 'state', 'pin',
+      'shopname', 'aadhaar', 'pan', 'bank-name'
+    ];
+    const pdfCell = row.querySelector('.pdf-cell');
+
+    if (btn.textContent === '✏️') {
+      fields.forEach(f => {
+        const el = row.querySelector(`.${f}`);
+        el.innerHTML = `<input value="${el.textContent}" class="border p-1 w-full" />`;
+      });
+      pdfCell.innerHTML = `<input type="file" name="pdfFile" class="border p-1 w-full bg-white" />`;
+      btn.textContent = '💾';
+    } else {
+      const formData = new FormData();
+      fields.forEach(f => {
+        const el = row.querySelector(`.${f} input`);
+        formData.append(f === 'name' ? 'fullname' : f, el.value);
+      });
+
+      const fileInput = pdfCell.querySelector('input[type="file"]');
+      if (fileInput && fileInput.files[0]) {
+        formData.append('pdfFile', fileInput.files[0]);
+      }
+
+      try {
+        const res = await fetch(`/update-bankpassbook/${id}`, {
+          method: 'PUT',
+          body: formData
+        });
+        const result = await res.json();
+        alert(result.message || 'Updated successfully');
+        btn.textContent = '✏️';
+        loadPsaData();
+      } catch (err) {
+        console.error('Update failed:', err);
+        alert('Failed to update');
+      }
+    }
+  }
+
+  window.onload = loadPsaData;
+</script>
+
+</body>
+</html>
