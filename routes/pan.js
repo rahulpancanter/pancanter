@@ -7,7 +7,7 @@ const fs = require('fs');
 const PanData = require('../models/PanData');
 const PanUpload = require('../models/PanUpload');
 const PsaUser = require('../models/PsaUser');
-const Newacceptenpan = require('../models/Newacceptenpan');
+const bankpassbookUser = require('../models/bankpassbookUser')
 
 // 🔧 Multer storage configuration
 const storage = multer.diskStorage({
@@ -15,25 +15,17 @@ const storage = multer.diskStorage({
   filename: (req, file, cb) => cb(null, Date.now() + '-' + file.originalname)
 });
 
-// 🔐 File filter based on fieldname
 const fileFilter = (req, file, cb) => {
-  const allowedMimeTypes = {
-    photo: ['image/jpeg', 'image/jpg'],
-    signature: ['image/jpeg', 'image/jpg'],
-    pdf: ['application/pdf']
-  };
-
-  const fieldName = file.fieldname;
-  const mimeTypes = allowedMimeTypes[fieldName] || [];
-
-  if (mimeTypes.includes(file.mimetype)) {
+  const allowedTypes = ['image/jpeg', 'image/jpg', 'application/pdf'];
+  if (allowedTypes.includes(file.mimetype)) {
     cb(null, true);
   } else {
-    cb(new Error(`Only ${mimeTypes.join(', ')} files are allowed for ${fieldName}`));
+    cb(new Error(`Only JPEG and PDF files are allowed.`));
   }
 };
 
-const upload = multer({ storage, fileFilter }); // ✅ Defined before any routes
+const upload = multer({ storage, fileFilter });
+
 
 // 🟢 POST: Submit only PDF (API route)
 router.post('/api/pan/submit', upload.single('pdf'), async (req, res) => {
@@ -181,50 +173,64 @@ router.get('/all/get-psa', async (req, res) => {
   }
 });
 
-// // POST - Submit New PAN
-// router.post('/submit-pan', async (req, res) => {
-//   try {
-//     const { parentName, dob, mobile, status, time, ackNo, remark } = req.body;
+router.post('/create-bankpassbook', upload.single('pdfFile'), async (req, res) => {
+  try {
+    const psaData = req.body;
+    if (req.file) {
+      psaData.pdfPath = req.file.path; // Store file path in DB
+    }
 
-//     const newPan = new Newacceptenpan({ parentName, dob, mobile, status, time, ackNo, remark });
-//     await newPan.save();
+    const newbankpassbook = new bankpassbookUser(psaData);
+    await newbankpassbook.save();
 
-//     res.status(200).json({ message: 'Submitted successfully!', data: newPan });
-//   } catch (error) {
-//     res.status(500).json({ message: 'Something went wrong!', error: error.message });
-//   }
-// });
+    res.json({ success: true, message: 'Bank passbook contact confirm the activate 24 ghante ke andar' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: 'Server Error' });
+  }
+});
 
-// // GET - All PAN Records
-// router.get('/all-pan', async (req, res) => {
-//   try {
-//     const pans = await Newacceptenpan.find().sort({ createdAt: -1 });
-//     res.json(pans);
-//   } catch (error) {
-//     res.status(500).json({ message: 'Failed to fetch records' });
-//   }
-// });
+// Update
+router.put('/update-bankpassbook/:id', upload.single('pdfFile'), async (req, res) => {
+  try {
+    const { fullname, username, mobile } = req.body;
+    const update = { fullname, username, mobile };
 
-// // PUT - Update
-// router.put('/update-pan/:id', async (req, res) => {
-//   try {
-//     const updatedPan = await Newacceptenpan.findByIdAndUpdate(req.params.id, req.body, { new: true });
-//     if (!updatedPan) return res.status(404).send('No record found');
-//     res.json({ message: 'PAN Application Updated', data: updatedPan });
-//   } catch (error) {
-//     res.status(500).json({ message: 'Update failed', error: error.message });
-//   }
-// });
+    if (req.file) {
+      update.pdfPath = req.file.path;
+    }
 
-// // DELETE - Delete
-// router.delete('/delete-pan/:id', async (req, res) => {
-//   try {
-//     const deletedPan = await Newacceptenpan.findByIdAndDelete(req.params.id);
-//     if (!deletedPan) return res.status(404).send('No record found');
-//     res.json({ message: 'PAN Application Deleted', data: deletedPan });
-//   } catch (error) {
-//     res.status(500).json({ message: 'Delete failed', error: error.message });
-//   }
-// });
+    await bankpassbookUser.findByIdAndUpdate(req.params.id, update);
+    res.json({ message: 'Updated successfully' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Update failed', error: err.message });
+  }
+});
+
+
+// Delete
+router.delete('/delete-bankpassbook/:id', async (req, res) => {
+  try {
+    const deleted = await bankpassbookUser.findByIdAndDelete(req.params.id);
+    if (!deleted) return res.status(404).json({ message: 'Not found' });
+    res.json({ message: 'Deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ message: 'Delete failed', error: err.message });
+  }
+});
+
+
+// ✅ Correct GET route for displaying bank passbook data
+router.get('/all/get-bankpassbook', async (req, res) => {
+  try {
+    const data = await bankpassbookUser.find().sort({ _id: -1 }); // ✅ yeh sahi model hai
+    res.json(data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Unable to fetch data' });
+  }
+});
+
 
 module.exports = router;
