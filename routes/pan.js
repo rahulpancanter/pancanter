@@ -27,21 +27,21 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({ storage, fileFilter });
 
 
-// 🟢 POST: Submit only PDF (API route)
+// Submit
 router.post('/api/pan/submit', upload.single('pdf'), async (req, res) => {
   try {
     const { acknowledgmentNo, pannumber, fullName, email, status } = req.body;
     const pdfFileName = req.file ? req.file.filename : null;
+
     const newEntry = new PanData({ acknowledgmentNo, pannumber, fullName, email, status, pdfFileName });
     await newEntry.save();
-    res.status(201).json({ message: 'Saved successfully' });
+    res.status(201).json({ message: 'Saved', data: newEntry });
   } catch (err) {
-    console.error('POST error:', err);
     res.status(500).json({ error: 'Server error' });
   }
 });
 
-// 🟡 PUT: Update PDF
+// Update
 router.put('/api/pan/:id', upload.single('pdf'), async (req, res) => {
   try {
     const { acknowledgmentNo, pannumber, fullName, email, status } = req.body;
@@ -51,43 +51,37 @@ router.put('/api/pan/:id', upload.single('pdf'), async (req, res) => {
     const updated = await PanData.findByIdAndUpdate(req.params.id, update, { new: true });
     if (!updated) return res.status(404).json({ error: 'Not found' });
 
-    res.json({ message: 'Updated successfully' });
+    res.json({ message: 'Updated', data: updated });
   } catch (err) {
-    console.error('PUT error:', err);
     res.status(500).json({ error: 'Server error' });
   }
 });
 
-// 🔵 GET: All Data
+// All data
 router.get('/api/pan/all', async (req, res) => {
   try {
     const data = await PanData.find().sort({ createdAt: -1 });
     res.json(data);
   } catch (err) {
-    console.error('GET error:', err);
     res.status(500).json({ error: 'Server error' });
   }
 });
 
-// 🔴 DELETE
+// Delete
 router.delete('/api/pan/:id', async (req, res) => {
   try {
     const entry = await PanData.findById(req.params.id);
     if (!entry) return res.status(404).json({ error: 'Not found' });
 
-    if (entry.pdfFileName) {
-      const filePath = path.join(__dirname, '../uploads', entry.pdfFileName);
-      if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
-    }
+    const filePath = path.join(__dirname, 'uploads', entry.pdfFileName);
+    if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
 
     await entry.deleteOne();
-    res.json({ message: 'Deleted successfully' });
+    res.json({ message: 'Deleted' });
   } catch (err) {
-    console.error('DELETE error:', err);
     res.status(500).json({ error: 'Server error' });
   }
 });
-
 // 🟢 Form Upload: Multiple files (photo, signature, pdf)
 router.post('/submit-newpan-update', upload.fields([
   { name: 'photo', maxCount: 1 },
