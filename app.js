@@ -12,6 +12,7 @@ const panRoutes = require('./routes/pan');
 const UpdatePancarddoc = require('./models/PanUpload');
 const Transaction = require('./models/Transaction');  // ✅ This was missing
 const Newacceptenpan = require('./models/Newacceptenpan');
+const PanRequest = require('./models/PanRequest');
 
 const app = express();
 
@@ -408,6 +409,54 @@ app.delete('/api/delete-pan/:id', async (req, res) => {
   }
 });
 
+// ✅ Generate unique order ID
+function generateOrderId() {
+  return 'PAN-' + Math.floor(10000000 + Math.random() * 90000000);
+}
+
+// ✅ PAN API submission
+app.post('/api/submit-pan-request', async (req, res) => {
+  try {
+    const {
+      fullname, mobile, email, fulladdress,
+      aadharNumber, pannumber, pan_mode, pan_type
+    } = req.body;
+
+    const apiKey = 'd0205bbadba675eafc331e4bf1858975';
+    const returnUrl = 'https://yourdomain.com/response'; // Change this if needed
+    const orderId = generateOrderId();
+
+    const apiUrl = `https://justpay.in.net/api/request_pan.php?api_key=${apiKey}&number=${mobile}&pan_mode=${pan_mode}&pan_type=${pan_type}&return_url=${returnUrl}&orderid=${orderId}`;
+    const response = await axios.get(apiUrl);
+    const result = response.data;
+
+    console.log('📤 API Request:', apiUrl);
+    console.log('📥 API Response:', result);
+
+    if (result.status_code === 200 && result.redirecting_url) {
+      await new PanRequest({
+        fullname,
+        mobile,
+        email,
+        fulladdress,
+        aadharNumber,
+        pannumber,
+        pan_mode,
+        pan_type,
+        orderid: orderId,
+        txnid: result.txnid,
+        redirecting_url: result.redirecting_url
+      }).save();
+
+      res.json({ success: true, redirect_url: result.redirecting_url });
+    } else {
+      res.json({ success: false, message: result.message || 'PAN API Error' });
+    }
+  } catch (err) {
+    console.error('❌ Server Error:', err.message);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
 
 
 // Use additional PAN routes
